@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+env:
+  AWS_REGION: eu-west-3
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,13 +16,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up AWS credentials
-        uses: aws-actions/configure-aws@v2
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: eu-west-3
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{env.AWS_REGION}}
+
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
       - name: Deploy to EKS
-        run: |
-          aws eks update-kubeconfig --name ${CLUSTER_NAME} --kubeconfig config.yaml
+        run:
           kubectl apply -f ./
