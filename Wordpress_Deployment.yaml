@@ -17,7 +17,7 @@ spec:
           image: boudun/wordpress:latest
           env:
             - name: WORDPRESS_DB_HOST
-              value: mariadb-headless.default.svc.cluster.local
+              value: mariadb-service
             - name: WORDPRESS_DB_USER
               value: wordpressUser
             - name: WORDPRESS_DB_PASSWORD
