@@ -25,6 +25,17 @@ jobs:
 
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+        
+      - name: Injection des secrets depuis GitHub
+        uses: GitOpsTech/secrets-sync@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          destination_namespace: 
+          secrets: |
+            - name=WORDPRESS_DB_USER file=Secrets.yaml:WORDPRESS_DB_USER key=WORDPRESS_DB_USER
+            - name=WORDPRESS_DB_PASSWORD file=Secrets.yaml:WORDPRESS_DB_PASSWORD key=WORDPRESS_DB_PASSWORD
+            - name=WORDPRESS_DB_NAME file=Secrets.yaml:WORDPRESS_DB_NAME key=WORDPRESS_DB_NAME
+            - name=WORDPRESS_AUTH_SALT file=Secrets.yaml:WORDPRESS_AUTH_SALT key=WORDPRESS_AUTH_SALT
 
       - name: Deploy to EKS
         run:

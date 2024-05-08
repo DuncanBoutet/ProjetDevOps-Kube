@@ -15,21 +15,16 @@ spec:
       containers:
         - name: mariadb
           image: boudun/mariadb:latest
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mariadb-root-password
-                  key: password
           ports:
             - containerPort: 3306
               name: mariadb
-      volumeMounts:
-        - name: mariadb-data
-          mountPath: /var/lib/mysql
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
   serviceName: mariadb-headless
   volumeClaimTemplates:
-    - name: mariadb-data
+    - metadata :
+        name: mariadb-data
       spec:
         accessModes:
           - ReadWriteOnce
