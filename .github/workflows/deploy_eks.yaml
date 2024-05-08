@@ -23,9 +23,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{env.AWS_REGION}}
 
+      - name: Vérifier si le namespace "projet-devops-2023" existe
+        run: kubectl get namespace projet-devops-2023 -o jsonpath='{.items[*]' | jq length | tee /tmp/namespace_count.txt
+        if: ${{ always() }}
+
+      - name: Créer ou supprimer le namespace "projet-devops-2023"
+        try:
+          run: kubectl create namespace projet-devops-2023
+        catch:
+          message: 'Le namespace "projet-devops-2023" existe déjà.'
+          run: kubectl delete -f ./ -n projet-devops-2023
+
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
       - name: Deploy to EKS
         run:
-          kubectl delete -f ./ && kubectl apply -f ./
+          kubectl apply -f ./
