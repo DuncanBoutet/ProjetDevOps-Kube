@@ -1,35 +1,12 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: wordpress
+  name: wordpress-service
 spec:
-  replicas: 3
+  type: LoadBalancer  # Pour rendre le service accessible de l'extérieur du cluster
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
   selector:
-    matchLabels:
-      app: wordpress
-  template:
-    metadata:
-      labels:
-        app: wordpress
-    spec:
-      containers:
-        - name: wordpress
-          image: boudun/wordpress:latest
-          env:
-            - name: WORDPRESS_DB_HOST
-              value: mariadb-headless.default.svc.cluster.local
-            - name: WORDPRESS_DB_USER
-              value: wordpressUser
-            - name: WORDPRESS_DB_PASSWORD
-              value: securepassword
-            - name: WORDPRESS_DB_NAME
-              value: wordpress
-            - name: WORDPRESS_AUTH_SALT
-              value: patatechaude
-          ports:
-            - containerPort: 80
-              name: http
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+    app: wordpress  # Le label à utiliser pour sélectionner les pods à exposer avec ce service
