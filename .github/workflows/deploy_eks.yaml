@@ -1,0 +1,25 @@
+name: Deploy to EKS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws@v2
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: eu-west-3
+
+      - name: Deploy to EKS
+        run: |
+          aws eks update-kubeconfig --name ${CLUSTER_NAME} --kubeconfig config.yaml
+          kubectl apply -f ./
