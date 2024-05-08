@@ -6,8 +6,9 @@ metadata:
 spec:
   type: LoadBalancer  # Pour rendre le service accessible de l'extérieur du cluster
   ports:
-    - port: 80
+    - protocol: TCP
+      port: 8082
       targetPort: 80
-      protocol: TCP
+      name: http
   selector:
     app: wordpress  # Le label à utiliser pour sélectionner les pods à exposer avec ce service
