@@ -6,7 +6,7 @@ on:
 
 env:
   AWS_REGION: eu-west-3
-  EKS_CLUSTER_NAME: ${{ CLUSTER_NAME }}
+  EKS_CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
 
 jobs:
   deploy:
