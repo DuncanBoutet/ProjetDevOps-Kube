@@ -27,12 +27,13 @@ jobs:
         run: kubectl get namespace projet-devops-2023 -o jsonpath='{.items[*]' | jq length | tee /tmp/namespace_count.txt
         if: ${{ always() }}
 
-      - name: Créer ou supprimer le namespace "projet-devops-2023"
-        try:
-          run: kubectl create namespace projet-devops-2023
-        catch:
-          message: 'Le namespace "projet-devops-2023" existe déjà.'
-          run: kubectl delete -f ./ -n projet-devops-2023
+      - name: Créer le namespace "projet-devops-2023" si inexistant
+        run: kubectl create namespace projet-devops-2023
+        if: steps.Verify_Namespace_Exists.outputs.exitCode != 0
+
+      - name: Supprimer la configuration Kubernetes existante (si présente)
+        run: kubectl delete -f ./ -n projet-devops-2023
+        if: steps.Verify_Namespace_Exists.outputs.exitCode == 0
 
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
