@@ -15,6 +15,15 @@ spec:
       containers:
         - name: mariadb
           image: boudun/mariadb:latest
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              value: yourRootPassword
+            - name: MARIADB_USER
+              value: wordpressUser
+            - name: MARIADB_DATABASE
+              value: wordpress
+            - name: MARIADB_PASSWORD
+              value: securepassword
           ports:
             - containerPort: 3306
               name: mariadb

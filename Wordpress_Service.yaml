@@ -18,6 +18,14 @@ spec:
           env:
             - name: WORDPRESS_DB_HOST
               value: mariadb-headless.default.svc.cluster.local
+            - name: WORDPRESS_DB_USER
+              value: wordpressUser
+            - name: WORDPRESS_DB_PASSWORD
+              value: securepassword
+            - name: WORDPRESS_DB_NAME
+              value: wordpress
+            - name: WORDPRESS_AUTH_SALT
+              value: patatechaude
           ports:
             - containerPort: 80
               name: http
