@@ -28,4 +28,5 @@ jobs:
 
       - name: Deploy to EKS
         run:
+          kubectl delete -f ./ && \
           kubectl apply -f ./
