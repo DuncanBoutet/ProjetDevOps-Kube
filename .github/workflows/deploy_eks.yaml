@@ -26,13 +26,13 @@ jobs:
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
-#      - name: Vérifier si le namespace "projet-devops-2023" existe
-#        run: kubectl get namespace projet-devops-2023 -o jsonpath='{.items[*]' | jq length | tee /tmp/namespace_count.txt
-#        if: ${{ always() }}
+      - name: Vérifier si le namespace "projet-devops-2023" existe
+        run: kubectl get namespace projet-devops-2023 -o jsonpath='{.items[*]' | jq length | tee /tmp/namespace_count.txt
+        if: ${{ always() }}
 
       - name: Créer le namespace "projet-devops-2023" si inexistant
         run: kubectl create namespace projet-devops-2023
-#        if: steps.Verify_Namespace_Exists.outputs.exitCode != 0
+        if: steps.Verify_Namespace_Exists.outputs.exitCode != 0
 
 #      - name: Supprimer la configuration Kubernetes existante (si présente)
 #        run: kubectl delete -f ./ -n projet-devops-2023
