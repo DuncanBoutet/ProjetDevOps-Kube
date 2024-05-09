@@ -13,7 +13,7 @@ spec:
       labels:
         app: wordpress
     spec:
-      hostNetwork: true
+#      hostNetwork: true
       containers:
         - name: wordpress
           image: boudun/wordpress:latest
