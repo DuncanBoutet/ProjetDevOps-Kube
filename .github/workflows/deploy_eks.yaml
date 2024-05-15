@@ -34,9 +34,9 @@ jobs:
         run: kubectl create namespace projet-devops-2023
         if: steps.Verify_Namespace_Exists.outputs.exitCode != 0
 
-#      - name: Supprimer la configuration Kubernetes existante (si présente)
-#        run: kubectl delete -f ./ -n projet-devops-2023
-#        if: steps.Verify_Namespace_Exists.outputs.exitCode == 0
+      - name: Supprimer la configuration Kubernetes existante (si présente)
+        run: kubectl delete -f ./ -n projet-devops-2023
+        if: steps.Verify_Namespace_Exists.outputs.exitCode == 0
 
       - name: Deploy to EKS
         run:
